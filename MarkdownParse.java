@@ -18,17 +18,18 @@ public class MarkdownParse {
                 openBracket = markdown.indexOf("[", openBracket);
             }
             int closeBracket = markdown.indexOf("]", openBracket);
-            System.out.println(closeBracket);
             if (isEscapeCharacter(markdown, closeBracket)){
                 closeBracket = markdown.indexOf("]", closeBracket+1);
-                System.out.println(closeBracket);
             }
-         
-            int openParen = markdown.indexOf("(", closeBracket+1);
-            System.out.println(openParen);
+            int openParen;
+            if (openBracket == -1 || closeBracket == -1){
+                openParen = markdown.indexOf("(",currentIndex);
+            }
+            else{
+                openParen = markdown.indexOf("(", closeBracket+1);
+            }
             if (isEscapeCharacter(markdown, openParen)){
                 openParen = markdown.indexOf("(", openParen+1);
-                System.out.println(openParen);
             }
             int closeParen = markdown.indexOf(")", openParen);
             if (isEscapeCharacter(markdown, closeParen)){
