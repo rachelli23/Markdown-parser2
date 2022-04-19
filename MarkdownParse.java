@@ -11,12 +11,29 @@ public class MarkdownParse {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
-    
+
         while(currentIndex < markdown.length()) {
             int openBracket = markdown.indexOf("[", currentIndex);
+            if (isEscapeCharacter(markdown, openBracket)){
+                openBracket = markdown.indexOf("[", openBracket);
+            }
             int closeBracket = markdown.indexOf("]", openBracket);
-            int openParen = markdown.indexOf("(", closeBracket);
+            System.out.println(closeBracket);
+            if (isEscapeCharacter(markdown, closeBracket)){
+                closeBracket = markdown.indexOf("]", closeBracket+1);
+                System.out.println(closeBracket);
+            }
+         
+            int openParen = markdown.indexOf("(", closeBracket+1);
+            System.out.println(openParen);
+            if (isEscapeCharacter(markdown, openParen)){
+                openParen = markdown.indexOf("(", openParen+1);
+                System.out.println(openParen);
+            }
             int closeParen = markdown.indexOf(")", openParen);
+            if (isEscapeCharacter(markdown, closeParen)){
+                closeParen = markdown.indexOf(")", closeParen+1);
+            }
             if (openParen + 1 <= closeParen){
                 toReturn.add(markdown.substring(openParen + 1, closeParen));
             }
@@ -26,9 +43,19 @@ public class MarkdownParse {
             
             currentIndex = closeParen + 1;
         }
-
         return toReturn;
+   
     }
+
+    private static boolean isEscapeCharacter(String md, int index){
+        if (index - 1 > -1 && md.charAt(index-1) == '\\'){
+            System.out.println("true");
+            return true;
+        }
+        return false;
+    }
+
+
 
 
     public static void main(String[] args) throws IOException {
@@ -37,4 +64,6 @@ public class MarkdownParse {
         ArrayList<String> links = getLinks(content);
 	    System.out.println(links);
     }
+
+   
 }
