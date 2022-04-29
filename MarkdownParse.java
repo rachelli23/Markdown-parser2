@@ -21,6 +21,9 @@ public class MarkdownParse {
             if (isEscapeCharacter(markdown, closeBracket)){
                 closeBracket = markdown.indexOf("]", closeBracket+1);
             }
+            if(closeBracket+1 == markdown.length() && markdown.indexOf("(",currentIndex) != -1){
+                closeBracket = -1;
+            }
             int openParen;
             if (openBracket == -1 || closeBracket == -1){
                 openParen = markdown.indexOf("(",currentIndex);
